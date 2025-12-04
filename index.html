@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quote Generator</h1>
+        <form id="quoteForm">
+            <label for="quoteInput">Enter your quote here...</label>
+            <textarea id="quoteInput" placeholder="Enter your quote here..."></textarea>
+
+            <label for="nameInput">Your Name</label>
+            <input type="text" id="nameInput" placeholder="Your name">
+
+            <label for="backgroundSelect">Choose Background</label>
+            <select id="backgroundSelect">
+                <option value="white">White Background</option>
+                <option value="lightblue">Light Blue Background</option>
+                <option value="darkblue">Dark Blue Background</option>
+                <option value="gray">Gray Background</option>
+            </select>
+
+            <label for="fontSelect">Choose Font</label>
+            <select id="fontSelect">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+            </select>
+
+            <label for="fontSizeSelect">Font Size</label>
+            <select id="fontSizeSelect">
+                <option value="30">Font Size 30px</option>
+                <option value="40">Font Size 40px</option>
+                <option value="50">Font Size 50px</option>
+            </select>
+
+            <label for="profilePicInput">Upload Profile Picture (Optional)</label>
+            <input type="file" id="profilePicInput">
+
+            <button type="button" onclick="generateQuote()">Generate Quote</button>
+        </form>
+
+        <canvas id="quoteCanvas" style="display: none;"></canvas>
+        <button id="downloadBtn" style="display: none;" onclick="downloadQuote()">Download Quote</button>
+
+        <div id="socialShare">
+            <a href="#" id="shareFacebook">Share on Facebook</a>
+            <a href="#" id="shareTwitter">Share on Twitter</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
