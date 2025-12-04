@@ -1,17 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="si">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Random Lines</title>
+  <title>Profile Card Generator</title>
   <script src="/_sdk/element_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;600;700&amp;family=Poppins:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
   <style>
     body {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Noto Sans Sinhala', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f766e 0%, #059669 50%, #10b981 100%);
       min-height: 100%;
       display: flex;
       align-items: center;
@@ -25,88 +28,105 @@
 
     .app-container {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
     }
 
     .content-wrapper {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 2.5rem;
       align-items: start;
     }
 
     .input-section {
       background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 28px;
+      padding: 3rem;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
     }
 
     .output-section {
       background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 28px;
+      padding: 3rem;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     h1 {
-      margin: 0 0 1.5rem 0;
-      font-size: 2rem;
+      margin: 0 0 2rem 0;
+      font-size: 2.25rem;
       font-weight: 700;
-      color: #1a202c;
+      background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-align: center;
     }
 
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     label {
       display: block;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
       font-weight: 600;
-      color: #2d3748;
-      font-size: 0.95rem;
+      color: #065f46;
+      font-size: 1rem;
     }
 
     input[type="text"],
-    textarea,
-    select {
+    textarea {
       width: 100%;
-      padding: 0.875rem 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      font-size: 1rem;
+      padding: 1rem 1.25rem;
+      border: 2px solid #d1fae5;
+      border-radius: 14px;
+      font-size: 1.05rem;
       transition: all 0.3s ease;
       font-family: inherit;
-      background: white;
+      background: #f0fdf4;
     }
 
     input[type="text"]:focus,
-    textarea:focus,
-    select:focus {
+    textarea:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.75rem center;
-      background-size: 1.25rem;
-      padding-right: 2.5rem;
+      border-color: #10b981;
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+      background: white;
     }
 
     textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 110px;
+    }
+
+    .color-picker-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .color-option {
+      position: relative;
+    }
+
+    input[type="color"] {
+      width: 100%;
+      height: 60px;
+      border: 3px solid #d1fae5;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    input[type="color"]:hover {
+      border-color: #10b981;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
     }
 
     .file-upload-wrapper {
@@ -120,22 +140,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
       width: 100%;
-      padding: 1rem;
-      background: #f7fafc;
-      border: 2px dashed #cbd5e0;
-      border-radius: 12px;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px dashed #10b981;
+      border-radius: 14px;
       cursor: pointer;
       transition: all 0.3s ease;
-      color: #4a5568;
+      color: #065f46;
       font-weight: 600;
+      font-size: 1rem;
     }
 
     .file-upload-btn:hover {
-      background: #edf2f7;
-      border-color: #667eea;
-      color: #667eea;
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border-color: #059669;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .file-upload-btn.selected {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border-color: #047857;
     }
 
     input[type="file"] {
@@ -144,70 +172,72 @@
     }
 
     .preview-image {
-      width: 80px;
-      height: 80px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
       margin-top: 1rem;
-      border: 3px solid #667eea;
+      border: 4px solid #10b981;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
     .generate-btn {
       width: 100%;
-      padding: 1rem 2rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.25rem 2rem;
+      background: linear-gradient(135deg, #0f766e 0%, #059669 50%, #10b981 100%);
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
+      border-radius: 14px;
+      font-size: 1.2rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      margin-top: 1rem;
     }
 
     .generate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
     }
 
     .generate-btn:active {
-      transform: translateY(0);
+      transform: translateY(-1px);
     }
 
     .card-canvas-wrapper {
       position: relative;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     #cardCanvas {
       max-width: 100%;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
     }
 
     .download-btn {
-      padding: 1rem 2.5rem;
-      background: #48bb78;
+      padding: 1.25rem 3rem;
+      background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 1rem;
+      border-radius: 14px;
+      font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
-      margin-bottom: 1rem;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      margin-bottom: 1.25rem;
     }
 
     .download-btn:hover {
-      background: #38a169;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(72, 187, 120, 0.6);
+      background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.6);
     }
 
     .download-btn:disabled {
-      background: #cbd5e0;
+      background: #d1d5db;
       cursor: not-allowed;
       box-shadow: none;
       transform: none;
@@ -215,8 +245,8 @@
 
     .social-share {
       display: none;
-      gap: 1rem;
-      margin-top: 0.5rem;
+      gap: 1.25rem;
+      margin-top: 0.75rem;
     }
 
     .social-share.visible {
@@ -224,10 +254,10 @@
     }
 
     .social-btn {
-      padding: 0.75rem 1.5rem;
+      padding: 0.9rem 1.75rem;
       border: none;
-      border-radius: 10px;
-      font-size: 0.9rem;
+      border-radius: 12px;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -235,35 +265,44 @@
       color: white;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .facebook-btn {
-      background: #1877f2;
+      background: linear-gradient(135deg, #1877f2 0%, #0c5ec5 100%);
     }
 
     .facebook-btn:hover {
-      background: #145dbf;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4);
     }
 
     .twitter-btn {
-      background: #1da1f2;
+      background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
     }
 
     .twitter-btn:hover {
-      background: #0d8bd9;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(29, 161, 242, 0.4);
     }
 
     .placeholder-text {
-      color: #a0aec0;
+      color: #9ca3af;
       text-align: center;
-      padding: 3rem 2rem;
-      font-size: 1.1rem;
+      padding: 4rem 2rem;
+      font-size: 1.2rem;
+      font-weight: 500;
     }
 
-    @media (max-width: 968px) {
+    .color-label {
+      font-size: 0.85rem;
+      color: #065f46;
+      text-align: center;
+      margin-top: 0.5rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 1100px) {
       .content-wrapper {
         grid-template-columns: 1fr;
       }
@@ -274,11 +313,11 @@
 
       .input-section,
       .output-section {
-        padding: 1.5rem;
+        padding: 2rem;
       }
 
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
       }
 
       .social-share {
@@ -300,49 +339,69 @@
   <main class="app-container">
    <div class="content-wrapper">
     <section class="input-section">
-     <h1 id="appTitle">Profile Card Generator</h1>
+     <h1 id="appTitle">🎨 Profile Card Generator</h1>
      <form id="cardForm">
-      <div class="form-group"><label for="nameInput">Your Name</label> <input type="text" id="nameInput" placeholder="John Doe" required>
+      <div class="form-group"><label for="nameInput">📝 Your Name / ඔබේ නම</label> <input type="text" id="nameInput" placeholder="John Doe / ජෝන් ඩෝ" required>
       </div>
-      <div class="form-group"><label for="textInput">Your Message</label> <textarea id="textInput" placeholder="Write something inspiring..." required></textarea>
+      <div class="form-group"><label for="usernameInput">👤 Username / පරිශීලක නාමය</label> <input type="text" id="usernameInput" placeholder="@johndoe" required>
       </div>
-      <div class="form-group"><label for="backgroundSelect">Choose Background</label> <select id="backgroundSelect"> <option value="gradient">Gradient (Purple-Blue)</option> <option value="white">White Background</option> <option value="lightblue">Light Blue Background</option> <option value="darkblue">Dark Blue Background</option> <option value="gray">Gray Background</option> <option value="black">Black Background</option> </select>
+      <div class="form-group"><label for="textInput">💬 Your Message / ඔබේ පණිවිඩය (Emojis supported! 😊🎉✨)</label> <textarea id="textInput" placeholder="Write something inspiring... / දේවල් ලියන්න... 🌟" required></textarea>
       </div>
-      <div class="form-group"><label for="imageInput">Profile Picture</label>
-       <div class="file-upload-wrapper"><label for="imageInput" class="file-upload-btn" id="fileLabel"> <span>📷</span> <span>Choose Image</span> </label> <input type="file" id="imageInput" accept="image/*" required>
-       </div><img id="previewImage" class="preview-image" style="display: none;">
-      </div><button type="submit" class="generate-btn" id="generateBtn">Generate Card</button>
+      <div class="form-group"><label>🎨 Choose Background Colors / පසුබිම් වර්ණ තෝරන්න</label>
+       <div class="color-picker-group">
+        <div class="color-option"><input type="color" id="bgColor1" value="#0f766e">
+         <div class="color-label">
+          Color 1
+         </div>
+        </div>
+        <div class="color-option"><input type="color" id="bgColor2" value="#10b981">
+         <div class="color-label">
+          Color 2
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="form-group"><label for="profileImageInput">📷 Profile Picture / පැතිකඩ පින්තූරය</label>
+       <div class="file-upload-wrapper"><label for="profileImageInput" class="file-upload-btn" id="profileLabel"> <span>📷</span> <span>Choose Profile Image</span> </label> <input type="file" id="profileImageInput" accept="image/*" required>
+       </div><img id="previewProfileImage" class="preview-image" style="display: none;">
+      </div>
+      <div class="form-group"><label for="bgImageInput">🖼️ Background Image (Optional) / පසුබිම් පින්තූරය</label>
+       <div class="file-upload-wrapper"><label for="bgImageInput" class="file-upload-btn" id="bgLabel"> <span>🖼️</span> <span>Choose Background Image</span> </label> <input type="file" id="bgImageInput" accept="image/*">
+       </div><img id="previewBgImage" class="preview-image" style="display: none; border-radius: 14px; width: 100%; height: 100px; object-fit: cover;">
+      </div><button type="submit" class="generate-btn" id="generateBtn">✨ Generate Card / කාඩ්පත සාදන්න</button>
      </form>
     </section>
     <section class="output-section">
      <div class="card-canvas-wrapper">
-      <canvas id="cardCanvas" width="600" height="800"></canvas>
-     </div><button class="download-btn" id="downloadBtn" disabled>Download Card</button>
+      <canvas id="cardCanvas" width="800" height="800"></canvas>
+     </div><button class="download-btn" id="downloadBtn" disabled>⬇️ Download Card</button>
      <div class="social-share" id="socialShare"><a href="#" class="social-btn facebook-btn" id="shareFacebook" target="_blank" rel="noopener noreferrer"> <span>📘</span> <span id="facebookText">Share on Facebook</span> </a> <a href="#" class="social-btn twitter-btn" id="shareTwitter" target="_blank" rel="noopener noreferrer"> <span>🐦</span> <span id="twitterText">Share on Twitter</span> </a>
      </div>
      <div id="placeholder" class="placeholder-text">
-      Your beautiful card will appear here ✨
+      Your beautiful card will appear here ✨<br>
+       ඔබේ අලංකාර කාඩ්පත මෙහි දිස්වේ 🎨
      </div>
     </section>
    </div>
   </main>
   <script>
     const defaultConfig = {
-      app_title: "Profile Card Generator",
-      button_text: "Generate Card",
-      download_text: "Download Card",
+      app_title: "🎨 Profile Card Generator",
+      button_text: "✨ Generate Card / කාඩ්පත සාදන්න",
+      download_text: "⬇️ Download Card",
       facebook_text: "Share on Facebook",
       twitter_text: "Share on Twitter",
-      background_color: "#667eea",
+      background_color: "#0f766e",
       card_surface_color: "#ffffff",
       text_color: "#1a202c",
-      accent_color: "#764ba2",
-      button_color: "#48bb78",
-      font_family: "Inter",
+      accent_color: "#10b981",
+      button_color: "#059669",
+      font_family: "Noto Sans Sinhala",
       font_size: 16
     };
 
-    let uploadedImage = null;
+    let uploadedProfileImage = null;
+    let uploadedBgImage = null;
     let generatedCardDataUrl = null;
     const canvas = document.getElementById('cardCanvas');
     const ctx = canvas.getContext('2d');
@@ -361,17 +420,17 @@
       twitterText.textContent = config.twitter_text || defaultConfig.twitter_text;
 
       const customFont = config.font_family || defaultConfig.font_family;
-      const baseFontStack = '-apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
+      const baseFontStack = 'Noto Sans Sinhala, Poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif';
       document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
 
       const baseSize = config.font_size || defaultConfig.font_size;
       document.body.style.fontSize = `${baseSize}px`;
-      document.querySelector('h1').style.fontSize = `${baseSize * 2}px`;
+      document.querySelector('h1').style.fontSize = `${baseSize * 2.25}px`;
       document.querySelectorAll('label').forEach(label => {
-        label.style.fontSize = `${baseSize * 0.95}px`;
+        label.style.fontSize = `${baseSize}px`;
       });
-      document.querySelectorAll('input, textarea, select').forEach(input => {
-        input.style.fontSize = `${baseSize}px`;
+      document.querySelectorAll('input, textarea').forEach(input => {
+        input.style.fontSize = `${baseSize * 1.05}px`;
       });
 
       const bgColor = config.background_color || defaultConfig.background_color;
@@ -389,16 +448,18 @@
       });
 
       const buttonColor = config.button_color || defaultConfig.button_color;
-      downloadBtn.style.background = buttonColor;
+      downloadBtn.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${buttonColor} 100%)`;
 
-      generateBtn.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${accentColor} 100%)`;
+      generateBtn.style.background = `linear-gradient(135deg, ${bgColor} 0%, ${buttonColor} 50%, ${accentColor} 100%)`;
       
-      if (uploadedImage && generatedCardDataUrl) {
+      if (uploadedProfileImage && generatedCardDataUrl) {
         const name = document.getElementById('nameInput').value;
+        const username = document.getElementById('usernameInput').value;
         const text = document.getElementById('textInput').value;
-        const background = document.getElementById('backgroundSelect').value;
-        if (name && text) {
-          generateCard(uploadedImage, name, text, background);
+        const color1 = document.getElementById('bgColor1').value;
+        const color2 = document.getElementById('bgColor2').value;
+        if (name && username && text) {
+          generateCard(uploadedProfileImage, uploadedBgImage, name, username, text, color1, color2);
         }
       }
     }
@@ -471,18 +532,39 @@
       });
     }
 
-    document.getElementById('imageInput').addEventListener('change', function(e) {
+    document.getElementById('profileImageInput').addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
           const img = new Image();
           img.onload = function() {
-            uploadedImage = img;
-            const preview = document.getElementById('previewImage');
+            uploadedProfileImage = img;
+            const preview = document.getElementById('previewProfileImage');
             preview.src = event.target.result;
             preview.style.display = 'block';
-            document.getElementById('fileLabel').innerHTML = '<span>✅</span><span>Image Selected</span>';
+            document.getElementById('profileLabel').innerHTML = '<span>✅</span><span>Profile Image Selected</span>';
+            document.getElementById('profileLabel').classList.add('selected');
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.getElementById('bgImageInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          const img = new Image();
+          img.onload = function() {
+            uploadedBgImage = img;
+            const preview = document.getElementById('previewBgImage');
+            preview.src = event.target.result;
+            preview.style.display = 'block';
+            document.getElementById('bgLabel').innerHTML = '<span>✅</span><span>Background Image Selected</span>';
+            document.getElementById('bgLabel').classList.add('selected');
           };
           img.src = event.target.result;
         };
@@ -494,113 +576,145 @@
       e.preventDefault();
       
       const name = document.getElementById('nameInput').value;
+      const username = document.getElementById('usernameInput').value;
       const text = document.getElementById('textInput').value;
-      const background = document.getElementById('backgroundSelect').value;
+      const color1 = document.getElementById('bgColor1').value;
+      const color2 = document.getElementById('bgColor2').value;
       
-      if (!uploadedImage) {
+      if (!uploadedProfileImage) {
         return;
       }
 
-      generateCard(uploadedImage, name, text, background);
+      generateCard(uploadedProfileImage, uploadedBgImage, name, username, text, color1, color2);
     });
 
-    function getBackgroundColors(bgType) {
-      const backgrounds = {
-        'gradient': { start: '#667eea', end: '#764ba2' },
-        'white': { start: '#ffffff', end: '#ffffff' },
-        'lightblue': { start: '#e0f2fe', end: '#bae6fd' },
-        'darkblue': { start: '#1e40af', end: '#1e3a8a' },
-        'gray': { start: '#9ca3af', end: '#6b7280' },
-        'black': { start: '#1f2937', end: '#111827' }
-      };
-      return backgrounds[bgType] || backgrounds['gradient'];
-    }
+    function generateCard(profileImage, bgImage, name, username, text, color1, color2) {
+      // Draw background
+      if (bgImage) {
+        // Draw background image with overlay
+        ctx.drawImage(bgImage, 0, 0, 800, 800);
+        
+        // Add semi-transparent overlay for better text visibility
+        const gradient = ctx.createLinearGradient(0, 0, 800, 800);
+        gradient.addColorStop(0, color1 + 'CC');
+        gradient.addColorStop(1, color2 + 'CC');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 800, 800);
+      } else {
+        // Draw gradient background
+        const gradient = ctx.createLinearGradient(0, 0, 800, 800);
+        gradient.addColorStop(0, color1);
+        gradient.addColorStop(1, color2);
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 800, 800);
+      }
 
-    function getTextColor(bgType) {
-      const darkBackgrounds = ['darkblue', 'gray', 'black'];
-      return darkBackgrounds.includes(bgType) ? '#ffffff' : '#1a202c';
-    }
-
-    function generateCard(image, name, text, background) {
-      const bgColors = getBackgroundColors(background);
-      const textColor = getTextColor(background);
-      const surfaceColor = background === 'black' ? '#374151' : '#ffffff';
-
-      const gradient = ctx.createLinearGradient(0, 0, 600, 800);
-      gradient.addColorStop(0, bgColors.start);
-      gradient.addColorStop(1, bgColors.end);
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 600, 800);
-
-      ctx.fillStyle = surfaceColor;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-      ctx.shadowBlur = 30;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 10;
-      roundRect(ctx, 40, 120, 520, 640, 30);
-      ctx.fill();
-      ctx.shadowColor = 'transparent';
-
+      // Draw small circular profile picture (left side, smaller size)
+      const profileSize = 90;
+      const profileX = 120;
+      const profileY = 120;
+      
       ctx.save();
       ctx.beginPath();
-      ctx.arc(300, 80, 70, 0, Math.PI * 2);
+      ctx.arc(profileX, profileY, profileSize / 2, 0, Math.PI * 2);
       ctx.closePath();
       ctx.clip();
       
-      const imgSize = Math.min(image.width, image.height);
-      const sx = (image.width - imgSize) / 2;
-      const sy = (image.height - imgSize) / 2;
-      ctx.drawImage(image, sx, sy, imgSize, imgSize, 230, 10, 140, 140);
+      const imgSize = Math.min(profileImage.width, profileImage.height);
+      const sx = (profileImage.width - imgSize) / 2;
+      const sy = (profileImage.height - imgSize) / 2;
+      ctx.drawImage(profileImage, sx, sy, imgSize, imgSize, profileX - profileSize/2, profileY - profileSize/2, profileSize, profileSize);
       ctx.restore();
 
-      ctx.strokeStyle = surfaceColor;
-      ctx.lineWidth = 8;
+      // Draw white ring around profile picture
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4;
       ctx.beginPath();
-      ctx.arc(300, 80, 70, 0, Math.PI * 2);
+      ctx.arc(profileX, profileY, profileSize / 2, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.shadowColor = 'transparent';
 
-      const nameColor = background === 'black' ? '#f3f4f6' : textColor;
-      ctx.fillStyle = nameColor;
-      ctx.font = `bold 42px Inter, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.fillText(name, 300, 240);
-
-      const accentColor = background === 'black' ? '#9ca3af' : (background === 'white' ? '#667eea' : bgColors.end);
-      ctx.strokeStyle = accentColor;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(150, 280);
-      ctx.lineTo(450, 280);
-      ctx.stroke();
-
-      ctx.fillStyle = nameColor;
-      ctx.font = `28px Inter, sans-serif`;
-      ctx.textAlign = 'center';
+      // Draw name (right of profile picture, smaller size)
+      const textStartX = profileX + profileSize / 2 + 30;
+      const nameY = 105;
       
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `700 32px "Noto Sans Sinhala", Poppins, sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.letterSpacing = '1px';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 3;
+      ctx.fillText(name, textStartX, nameY);
+      ctx.shadowColor = 'transparent';
+      ctx.letterSpacing = '0px';
+
+      // Draw username below name
+      ctx.fillStyle = '#ffffff';
+      ctx.globalAlpha = 0.9;
+      ctx.font = `400 22px Poppins, sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText(username, textStartX, nameY + 35);
+      ctx.globalAlpha = 1.0;
+
+      // Calculate text dimensions for message
+      ctx.font = `400 24px "Noto Sans Sinhala", Poppins, sans-serif`;
       const words = text.split(' ');
+      let lines = [];
       let line = '';
-      let y = 350;
-      const maxWidth = 460;
-      const lineHeight = 40;
+      const maxWidth = 680;
+      const lineHeight = 38;
 
       for (let i = 0; i < words.length; i++) {
         const testLine = line + words[i] + ' ';
         const metrics = ctx.measureText(testLine);
         
         if (metrics.width > maxWidth && i > 0) {
-          ctx.fillText(line.trim(), 300, y);
+          lines.push(line.trim());
           line = words[i] + ' ';
-          y += lineHeight;
-          
-          if (y > 700) break;
         } else {
           line = testLine;
         }
       }
-      
-      if (y <= 700) {
-        ctx.fillText(line.trim(), 300, y);
+      if (line.trim().length > 0) {
+        lines.push(line.trim());
       }
+
+      // Calculate white background box dimensions
+      const textStartY = 280;
+      const padding = 40;
+      const bgHeight = Math.max(200, (lines.length * lineHeight) + (padding * 2));
+      const bgWidth = 720;
+      const bgX = (800 - bgWidth) / 2;
+      const bgY = textStartY - padding;
+
+      // Draw white background box with shadow
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.97)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 25;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 8;
+      roundRect(ctx, bgX, bgY, bgWidth, bgHeight, 24);
+      ctx.fill();
+      ctx.shadowColor = 'transparent';
+
+      // Draw message text
+      ctx.fillStyle = '#1a202c';
+      ctx.globalAlpha = 0.95;
+      ctx.font = `400 24px "Noto Sans Sinhala", Poppins, sans-serif`;
+      ctx.textAlign = 'center';
+      
+      let y = textStartY + 15;
+      for (let i = 0; i < lines.length && y <= 720; i++) {
+        ctx.fillText(lines[i], 400, y);
+        y += lineHeight;
+      }
+      ctx.globalAlpha = 1.0;
 
       generatedCardDataUrl = canvas.toDataURL('image/png');
 
@@ -638,11 +752,10 @@
 
     document.getElementById('shareTwitter').addEventListener('click', function(e) {
       e.preventDefault();
-      const name = document.getElementById('nameInput').value;
-      const text = 'Check out my profile card created with Profile Card Generator!';
+      const text = 'Check out my profile card created with Profile Card Generator! 🎨✨';
       const shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
       window.open(shareUrl, '_blank', 'noopener,noreferrer');
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8c254f617735f2',t:'MTc2NDg2MDEzNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8c71f52178a17f',t:'MTc2NDg2MzI3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
